@@ -1,7 +1,7 @@
 Just a few jQueryUI Extensions
 ===========================================================
 
-jqeury.ui.dialog-extras
+jQueryUI dialog-extras
 ----------------------------------------
 
 The first of likely other extras plugins/widgets for jQueryUI
