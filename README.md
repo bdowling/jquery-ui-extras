@@ -53,30 +53,30 @@ Example of some of the options you can specify and the objects that would be pas
 ```js
   // Create one more manually to show you some possibilities
   newDialog("widget").dialog({
-	  href: "/fetch_dialog?dialog=widget", 
-	      create: function(e,d) { console.log("Create fn Called"); },
-	      autoOpen: false,
-	      modal: true,
-	      personas: { 
-		          new: {buttons: 
-			        {'New Widget': function(e) ($(this).find("form").submit()),
-				'Cancel': function() {$(this).dialog('close');}}
-				},
-			  update: {buttons:
-			           {'Update Widget': function(e) ($(this).find("form").submit()),
-				    'Cancel': function() {$(this).dialog('close');} 
-				    }
-				   open: function(e,d) { ... Fetch Data, populate form ... };
-				   close: function(e,d) { console.log("Update Closed"); }}}
+          href: "/fetch_dialog?dialog=widget", 
+              create: function(e,d) { console.log("Create fn Called"); },
+              autoOpen: false,
+              modal: true,
+              personas: { 
+                          new: {buttons: 
+                                {'New Widget': function(e) ($(this).find("form").submit()),
+                                'Cancel': function() {$(this).dialog('close');}}
+                                },
+                          update: {buttons:
+                                   {'Update Widget': function(e) ($(this).find("form").submit()),
+                                    'Cancel': function() {$(this).dialog('close');} 
+                                    }
+                                   open: function(e,d) { ... Fetch Data, populate form ... };
+                                   close: function(e,d) { console.log("Update Closed"); }}}
       } );
 
   $("<button persona='new'>New Widget</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-field").dialog("open",e);
+             $("#dialog-field").dialog("open",e);
       }
    );
 
   $("<button persona='update'>Update Widget</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-field").dialog("open",e);
+             $("#dialog-field").dialog("open",e);
       }
    );
 
@@ -94,9 +94,9 @@ en-masse.
   var newDialog = function(id) { 
     var d = $('#dialog-' + id);      // Std id prefix for all dialogs
       if (d.length) 
-	  return d;
+          return d;
       else {
-	  return $("<div id='dialog-" + id + "'></div>").appendTo("body").hide();
+          return $("<div id='dialog-" + id + "'></div>").appendTo("body").hide();
       }
   }
   
@@ -112,14 +112,14 @@ en-masse.
 
   var stdPersonas = function(type) {
       return {new: newPersona('New ' + type),
-	      update: newPersona('Update ' + type)};
+              update: newPersona('Update ' + type)};
   }
 
   var stdDialog = function(id, type) { 
       return newDialog(id).dialog({href: "/fetch_dialog?dialog=" + id,
-				   autoOpen: false,
-				   modal: true,
-				   personas: stdPersonas(type)
+                                   autoOpen: false,
+                                   modal: true,
+                                   personas: stdPersonas(type)
       });
   };
 
@@ -127,8 +127,8 @@ en-masse.
   var stdDialogs = {"field": "Baseball Field",
                     "player": "Player",
                     "bat": "Bat",
-		    "ball": "Ball",
-		    "glove": "Glove",
+                    "ball": "Ball",
+                    "glove": "Glove",
   };
 
   // Create a batch of mostly "alike" dialogs
@@ -136,12 +136,12 @@ en-masse.
 
   // Then you'd create your buttons, links, click actions somewhere to load a dialog.
   $("<button persona='new'>New Baseball Field</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-field").dialog("open",e);
+             $("#dialog-field").dialog("open",e);
       }
    );
 
   $("<button persona='update>Update Field</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-field").dialog("open",e);
+             $("#dialog-field").dialog("open",e);
       }
    );
 
