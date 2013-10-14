@@ -1,4 +1,4 @@
-[jquery.ui-extras] A few of my jQuery ui Extensions
+jquery.ui-extras Just a few jQueryUI Extensions
 ===========================================================
 
 jqeury.ui.dialog-extras
