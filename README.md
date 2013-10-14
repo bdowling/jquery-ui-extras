@@ -1,4 +1,4 @@
-jquery.ui-extras Just a few jQueryUI Extensions
+Just a few jQueryUI Extensions
 ===========================================================
 
 jqeury.ui.dialog-extras
@@ -25,6 +25,9 @@ want an "Edit" or "Update" dialog that follows the same basic
 template.  I felt there should be an easier way to do this as well.
 
 So, I decided to write the two widget extensions that you see here to help address this.
+
+- **jquery.ui.dialog-lazy** Provides for the lazy loading functionality
+- **jquery.ui.dialog-persona** Provides for the Multiple-Personality behavoir, or Personas
 
 If you find them useful, that's great, if you don't that's fine to.
 
