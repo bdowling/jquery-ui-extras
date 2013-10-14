@@ -1,10 +1,10 @@
-[jquery.ui-extras, A few of my jQuery ui Dialog Extensions]
+[jquery.ui-extras] A few of my jQuery ui Extensions
 ===========================================================
 
 jqeury.ui.dialog-extras
 ----------------------------------------
 
-The first of likely other extras.
+The first of likely other extras plugins/widgets for jQueryUI
 
 Defining the Need
 ----------------------------------------
@@ -13,7 +13,7 @@ There are a number of cases when a "lazy loading" functionality is
 useful in web applications, preventing uneeded content from hiding
 behind your web apps.
 
-Unfortunately, jQuery.ui does not provide a clean, straightforward way
+Unfortunately, jQueryUI does not provide a clean, straightforward way
 to do this with dialogs as it does with say tab content. You could define 
 some widgets and tie some .load() events to be triggered on them, but you 
 would have to write a lot of boilerplate to do that for a lot of dialogs.
