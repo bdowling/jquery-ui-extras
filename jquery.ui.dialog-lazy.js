@@ -52,7 +52,6 @@
 		  this._wasCreated === true) {     // or it was loaded
 		  return this._super();
 	      } else {
-		  log("dialog-lazy.create: delayed loading [" + this.options.href + "]");
 		  return false;
 	      }
 	}, 
@@ -62,10 +61,8 @@
 	// is one called from our persona plugin
 	_setOption: function (key, val) {
 	    if (!this._wasCreated) { //  && key in delayedOptions) {
-		log("Skipping parent._setOption for " + key + " = " + val);
 		return true;
 	    } else {
-		log("Calling parent._setOption for " + key + " = " + val);
 		return this._super(key,val);
 	    }
 	},
@@ -89,7 +86,6 @@
 	},
 
 	open: function(e) {
-	    log("dialog-lazy.open " + e);
 	    if (this.options.href === ""  ||      // Nothing to load
 		this._wasCreated === true) {     // or it was loaded
 		return this._superApply(arguments);
@@ -120,17 +116,15 @@
 		    url: this.options.href,
 			method: 'GET'
 			})
-		.then($.proxy(this._loadDialog, this),
-		      function(a) { log(a); },  // XXXX
-		      function(a) { log(a); }); // XXXX
+		.then($.proxy(this._loadDialog, this)); 
+//		      function(a) { log(a); },  // XXXX
+//		      function(a) { log(a); }); // XXXX
 	    
 	    return true;
 	},
         _loadDialog: function(data, textStatus, jqXHR) {
 	    var e = this._lastEvent;
-	    log("_loadDialog called " + e);
 
-	    log(textStatus); // XXX not checking status
 	    var element = this.element[0];
 	    var div;
 	    if (typeof data == "object" && data.html) { // JSON is possible

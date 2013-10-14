@@ -55,14 +55,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    return this.options.personas !== null;
 	},
 	open: function(e) { 
-	    log("dialogPersonas.open " + e);
 	    if (this._hasPersonas()) { 
 		this._setPersona(e);
-	
-		if ($(this).activatedBy) {
-		    console.log("Activated By:");
-		    log($(this).activatedBy);
-		}
 	    }
 
 	    this._superApply(arguments); // Open Dialog
@@ -70,7 +64,6 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	_setPersona: function(e) {
 	    if (e) {
 
-		log("Checking clicked item persona");
 		if (e.currentTarget) {
 		    $(this).activatedBy = $(e.currentTarget);
 		    this.persona($(e.currentTarget).attr("persona"));
@@ -111,10 +104,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    } else if (persona !== this._persona) {
 		var oldpersona = this._persona;
 		this._persona = persona;
-		log("Persona = " + this._persona);
 
 		if (!this.options.personas[this._persona]) {
-		    log("Falling back to default pers: " + this.options.defaultPersona);
 		    this._persona = this.options.defaultPersona;
 		}
 
@@ -138,14 +129,6 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		$.extend(this.options, 
 			 {width:"auto",height:"auto"}, 
 			 this.options.personas[this._persona]);
-		$.each(this.options.personas[this._persona], function(k,v) {
-			log(k + " = " + v);
-			if (typeof v == "object") {
-			    $.each(v, function(k,v) {
-				    log(" -> " + k + " = " + v);
-				});
-			}
-		    });
 
 		// Update any features that depend on changed options
 		this.refresh();
