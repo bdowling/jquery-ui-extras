@@ -41,6 +41,56 @@ Example Uses
 The following examples go into some of the possible use cases for these extended dialog 
 widgets.
 
+The following examples are demo'ing both widgets.  The dialog-lazy
+widget largely implements only the 'href' option, so separate examples
+are not really needed.
+
+
+Creating Manually
+-----------------
+
+Example of some of the options you can specify and the objects that would be passed.
+
+```js
+  // Create one more manually to show you some possibilities
+  newDialog("widget").dialog({
+	  href: "/fetch_dialog?dialog=widget", 
+	      create: function(e,d) { console.log("Create fn Called"); },
+	      autoOpen: false,
+	      modal: true,
+	      personas: { 
+		          new: {buttons: 
+			        {'New Widget': function(e) ($(this).find("form").submit()),
+				'Cancel': function() {$(this).dialog('close');}}
+				},
+			  update: {buttons:
+			           {'Update Widget': function(e) ($(this).find("form").submit()),
+				    'Cancel': function() {$(this).dialog('close');} 
+				    }
+				   open: function(e,d) { ... Fetch Data, populate form ... };
+				   close: function(e,d) { console.log("Update Closed"); }}}
+      } );
+
+  $("<button persona='new'>New Widget</button>").appendTo("body").on('click', function(e) {
+  	     $("#dialog-field").dialog("open",e);
+      }
+   );
+
+  $("<button persona='update'>Update Widget</button>").appendTo("body").on('click', function(e) {
+  	     $("#dialog-field").dialog("open",e);
+      }
+   );
+
+```
+
+Creating many dialogs with a little more finesse
+------------------------------------------------
+
+These widgets are afterall being built for cases where you have a ton
+of dialogs and don't want to load/instantiate them all fully if the
+user might not use them all.  So here's a little more sugar to do this
+en-masse.
+
 ```js
   var newDialog = function(id) { 
     var d = $('#dialog-' + id);      // Std id prefix for all dialogs
@@ -74,36 +124,25 @@ widgets.
       });
   };
 
-  // Create one more manually to show you some possibilities
-  newDialog("widget").dialog({
-	  href: "/fetch_dialog?dialog=widget", 
-	      create: function(e,d) { console.log("Create fn Called"); },
-	      open: function(e,d) { console.log("Open fn Called"); },
-	      autoOpen: false,
-	      modal: true,
-	      personas: { 
-		          new: newPersona('New Widget'),
-			  update: newPersona('Update Widget', {
-			          open: function(e,d) { ... Fetch Data, populate form ... };
-				  close: function(e,d) { console.log("Update Closed"); }})
-		      }
-      } );
-
   //  Just so we can have different id's and Names for our Dialogs
-  var stdDialogs = {"bat": "Bat",
+  var stdDialogs = {"field": "Baseball Field",
+                    "player": "Player",
+                    "bat": "Bat",
 		    "ball": "Ball",
+		    "glove": "Glove",
   };
 
   // Create a batch of mostly "alike" dialogs
   $.each(stdDialogs, function(id,type) { stdDialog(id,type); });
 
-  $("<button persona='new'>New Widget</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-widget").dialog("open",e);
+  // Then you'd create your buttons, links, click actions somewhere to load a dialog.
+  $("<button persona='new'>New Baseball Field</button>").appendTo("body").on('click', function(e) {
+  	     $("#dialog-field").dialog("open",e);
       }
    );
 
-  $("<button persona='update>Update Widget</button>").appendTo("body").on('click', function(e) {
-  	     $("#dialog-widget").dialog("open",e);
+  $("<button persona='update>Update Field</button>").appendTo("body").on('click', function(e) {
+  	     $("#dialog-field").dialog("open",e);
       }
    );
 
@@ -113,7 +152,7 @@ widgets.
 Order of Use is Important
 -------------------------
 
-Ordering is important if you want to use both these modules.
+Ordering is important if you want to use both these javascript includes.
 
 For example, the "title" of the "Loading" dialog could be switched by
 a persona, if you have the persona loaded first, the dialog-lazy won't
