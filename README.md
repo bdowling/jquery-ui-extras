@@ -29,7 +29,7 @@ So, I decided to write the two widget extensions that you see here to help addre
 If you find them useful, that's great, if you don't that's fine to.
 
 If you do use these modules and have any comments/suggestions
-improvements, I welcome you to fork the project and provide pull
+improvements, I welcome you to fork the project and provide feedback or pull
 requests.
 
 Example Uses
