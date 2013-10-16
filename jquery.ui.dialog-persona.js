@@ -88,7 +88,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    }
 	},
 	refresh: function(e) {
-	    if (e) {   //  XXXX Note: Without test, this infinate recurssion would result 
+	    if (e) {
 		this._setPersona(e);
 	    }
 	    return this._super(e);
@@ -120,18 +120,32 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		    // the other did not have them, the dialog would
 		    // not go back to auto. Fix for this one option below.
 		    
-		    $.each(Object.keys(this.options.personas[oldpersona]), function(i,k) {
-			    delete that.options[k];
-			});
+		    $.each(Object.keys(this.options.personas[oldpersona]), 
+			   function(k,v) {
+			       delete that.options[k];
+			   });
 		}
 
-		// width and height auto seem ok to impart into the dialog if not overridden
+		// width and height auto seem ok to impart on the
+		// dialog if not overridden
+
+		// Trying something new here, instead of extending our
+		// options it may be a better bet to call
+		// _setOptions() with the persona, in that way if the
+		// dialog is instantiated it will force the parents to
+		// do their refresh actions.
+
 		$.extend(this.options, 
-			 {width:"auto",height:"auto"}, 
-			 this.options.personas[this._persona]);
+		 	 {width:"auto", height:"auto"});
+		this._setOptions(this._persona);
+		
+		// $.extend(this.options, 
+		// 	 {width:"auto",height:"auto"}, 
+		// 	 this.options.personas[this._persona]);
 
 		// Update any features that depend on changed options
-		this.refresh();
+		// Note: This just calls the parent refresh() without an e.
+		this.refresh(); 
 
 		this._trigger('persona', null, {'dialog': this,
 			                            'oldpersona': oldpersona, 
