@@ -40,11 +40,6 @@
 	    //		this.options.autoOpen = false;
 	    //	    }
 	    
-	    // Do the same thing _super() would do, but call our open() instead, is this an $.widget inheritance considered a bug?
-	     // if ( this.options.autoOpen ) {
-	     // 	 this.open();
-	     // }
-
 	    return this._super();
 	 }, 
 	_create:  function() {
@@ -56,23 +51,34 @@
 	      }
 	}, 
 
-	// Next two methods are just to protect from calling parent early
-        // There are a host of other methods in ui.dialog that are unsafe, but this
-	// is one called from our persona plugin
+	// Next few methods are just to protect from calling parent before instantiation
+        // There are a host of other methods in ui.dialog that are unsafe, but these
+	// are just a few common ones
+	_setOptions: function (options) {
+	    if (!this._wasCreated) { //  && key in delayedOptions) {
+		return;
+	    }
+
+	    return this._super(key,val);
+	},
 	_setOption: function (key, val) {
 	    if (!this._wasCreated) { //  && key in delayedOptions) {
-		return true;
-	    } else {
-		return this._super(key,val);
+		return;
+	    } else if (key == "href" && val) {
+		this._wasCreated = false;
 	    }
+
+	    return this._super(key,val);
 	},
 	refresh: function(e) {
-	    if (this._wasCreated) {
-		this._setOptions(this.options); // Bit Overkill, Could this backfire?
+	    if (this.options.href && this._wasCreated) {
+		// This was here for mostly for persona, but is better
+		// done there when switching personas
+		// this._setOptions(this.options); // Bit Overkill, Could this backfire?
 		// Alternatively have an array of keys that should be refreshed
 		// this._createButtons();
 	    }
-	    //	    return this._super(e);
+	    return this._super(e);
 	},
 	_createButtons: function () { // Unsafe until loaded
 	    if (this._wasCreated) {
@@ -95,15 +101,17 @@
 	    }
 	},
 	reload: function(e) {
+	    this._wasCreated = false;
 	    this._openNext = true;
 	    if (e) 
 		 this.refresh(e);
+
 	    return this.loadDialog(e);
 	},
 	loadDialog: function(e) {
 	    if (this._loader) 
 		return;
-	    if (this._openNext) {
+	    if (this._openNext && !this._isOpen) {
 		this._loader = $(this.options.loadingDialog);
 		this._loader.attr('title', this.options.loadingTitle || 
 				  this.options.title ? 
@@ -117,8 +125,6 @@
 			method: 'GET'
 			})
 		.then($.proxy(this._loadDialog, this)); 
-//		      function(a) { log(a); },  // XXXX
-//		      function(a) { log(a); }); // XXXX
 	    
 	    return true;
 	},
@@ -129,7 +135,7 @@
 	    var div;
 	    if (typeof data == "object" && data.html) { // JSON is possible
 		div = $(data.html);
-	    } else { // otherwise assumed to be HTML
+	    } else {                                    // otherwise assumed to be HTML
 		div = $(data);
 	    }
 
@@ -143,7 +149,7 @@
 		delete this._loader;
 	    }
 
-	    this._wasCreated = true;
+	    this._wasCreated = true;  // Feels like this belongs in _create, should we have a _wasLoaded ?
 	    this._create();
 
 	    this._trigger('loaded', null, {'dialog': this});
