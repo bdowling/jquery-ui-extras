@@ -54,16 +54,20 @@
 	// Next few methods are just to protect from calling parent before instantiation
         // There are a host of other methods in ui.dialog that are unsafe, but these
 	// are just a few common ones
+	_delayedSetOptions: {},
 	_setOptions: function (options) {
 	    if (!this._wasCreated) { //  && key in delayedOptions) {
 		return;
 	    }
 
-	    return this._super(key,val);
+	    return this._super(options);
 	},
 	_setOption: function (key, val) {
+	    log(key + " = " + val);
 	    if (!this._wasCreated) { //  && key in delayedOptions) {
-		return;
+		if (this._delayedSetOptions[key] === null)
+		    this._delayedSetOptions[key] = val;
+		return true;
 	    } else if (key == "href" && val) {
 		this._wasCreated = false;
 	    }
@@ -74,11 +78,14 @@
 	    if (this.options.href && this._wasCreated) {
 		// This was here for mostly for persona, but is better
 		// done there when switching personas
+		// XXXX If we find we need to turn this on again, need to strip href
+		// as it will now void the _wasCreated
 		// this._setOptions(this.options); // Bit Overkill, Could this backfire?
 		// Alternatively have an array of keys that should be refreshed
+		// log("Create Buttons");
 		// this._createButtons();
 	    }
-	    return this._super(e);
+	    //	    return this._super(e);
 	},
 	_createButtons: function () { // Unsafe until loaded
 	    if (this._wasCreated) {
@@ -94,6 +101,12 @@
 	open: function(e) {
 	    if (this.options.href === ""  ||      // Nothing to load
 		this._wasCreated === true) {     // or it was loaded
+		if (this._delayedSetOptions.length) {
+		    this._setOptions(this._delayedSetOptions);
+		    objlog(this._delayedSetOptions);
+		    this._delayedSetOptions = {};
+		}
+
 		return this._superApply(arguments);
 	    } else {
 		this._openNext = true;

@@ -52,7 +52,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	//     return this._super();
 	// },
 	_hasPersonas: function() {
-	    return this.options.personas !== null;
+	    return Object.getOwnPropertyNames(this.options.personas).length > 0;
 	},
 	open: function(e) { 
 	    if (this._hasPersonas()) { 
@@ -61,17 +61,22 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
 	    this._superApply(arguments); // Open Dialog
 	},
+	refresh: function(e) {
+	    if (e) {
+		this._setPersona(e);
+	    }
+	    return this._super(e);
+	},
 	_setPersona: function(e) {
 	    if (e) {
-
 		if (e.currentTarget) {
 		    $(this).activatedBy = $(e.currentTarget);
 		    this.persona($(e.currentTarget).attr("persona"));
-		} else if (e) {
+		} else {
 		    this.persona(e);
 		}
 	    } else {
-		this._defaultPersona();
+		this.persona();
 	    }
 	},
 	_defaultPersona: function() {
@@ -79,19 +84,11 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		this._persona == false || this._persona == undefined) {
 		if (!this.options.defaultPersona || 
 		    !this.options.personas[this.options.defaultPersona]) {
-		    if (this.options.personas) {
-			this.options.defaultPersona = Object.keys(this.options.personas)[0];
-		    }
+		    this.options.defaultPersona = Object.keys(this.options.personas)[0];
 		}
-		
-		this.persona(this.options.defaultPersona);
+
+		return this.options.defaultPersona;
 	    }
-	},
-	refresh: function(e) {
-	    if (e) {
-		this._setPersona(e);
-	    }
-	    return this._super(e);
 	},
 	persona: function(persona) {
 	    if (!this._hasPersonas()) {
@@ -99,9 +96,13 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    }
 
 	    var that = this;
+	    if (!this._persona)
+		persona = this._defaultPersona();
+
 	    if (persona == null || persona == "") {
 		return this._persona;
 	    } else if (persona !== this._persona) {
+		//		log("Persona: " + persona + " OLD: " + this._persona);
 		var oldpersona = this._persona;
 		this._persona = persona;
 
@@ -120,7 +121,7 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		    // the other did not have them, the dialog would
 		    // not go back to auto. Fix for this one option below.
 		    
-		    $.each(Object.keys(this.options.personas[oldpersona]), 
+		    $.each(this.options.personas[oldpersona], 
 			   function(k,v) {
 			       delete that.options[k];
 			   });
@@ -136,13 +137,12 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		// do their refresh actions.
 
 		$.extend(this.options, 
-		 	 {width:"auto", height:"auto"});
-		this._setOptions(this._persona);
+		 	 {width:"auto", height:"auto"},
+			 this.options.personas[this._persona]);
+		// If the widget is already open, also call setOptions so it can
+		// handle any dynamic changes.
+		this._setOptions(this.options.personas[this._persona]);
 		
-		// $.extend(this.options, 
-		// 	 {width:"auto",height:"auto"}, 
-		// 	 this.options.personas[this._persona]);
-
 		// Update any features that depend on changed options
 		// Note: This just calls the parent refresh() without an e.
 		this.refresh(); 
