@@ -67,7 +67,7 @@
 	    if (!this._wasCreated) { //  && key in delayedOptions) {
 		if (this._delayedSetOptions[key] === null)
 		    this._delayedSetOptions[key] = val;
-		return true;
+		return;
 	    } else if (key == "href" && val) {
 		this._wasCreated = false;
 	    }
@@ -172,6 +172,14 @@
 	    } else {
 		return this;
 	    }
+	},
+
+	// Temporary work around for this widget not being able to
+	// tell the widget was already in the dom at initialization.
+	// This doesn't fix the cached after initialization issue.
+	sideLoaded: function() {
+	    this._wasCreated = true; 
+	    this._create();
 	},
         _openSuper: function() {
 	    return $.ui.dialog.prototype.open.call( this );		    
