@@ -47,7 +47,7 @@
 		  this._wasCreated === true) {     // or it was loaded
 		  return this._super();
 	      } else {
-		  return false;
+		  return true;
 	      }
 	}, 
 
@@ -56,7 +56,7 @@
 	// are just a few common ones
 	_delayedSetOptions: {},
 	_setOptions: function (options) {
-	    if (!this._wasCreated) { //  && key in delayedOptions) {
+		if (this.options.href !== ""  || !this._wasCreated) { //  && key in delayedOptions) {
 		return;
 	    }
 
@@ -87,16 +87,16 @@
 	    }
 	    //	    return this._super(e);
 	},
-	_createButtons: function () { // Unsafe until loaded
-	    if (this._wasCreated) {
-		return this._super();
-	    }
-	},
-	button: function () { // Unsafe until loaded
-	    if (this._wasCreated) {
-		return this._super();
-	    }
-	},
+	// _createButtons: function () { // Unsafe until loaded
+	//     if (this._wasCreated) {
+	// 	return this._super();
+	//     }
+	// },
+	// button: function () { // Unsafe until loaded
+	//     if (this._wasCreated) {
+	// 	return this._super();
+	//     }
+	// },
 
 	open: function(e) {
 	    if (this.options.href === ""  ||      // Nothing to load
