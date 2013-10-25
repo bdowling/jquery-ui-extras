@@ -45,6 +45,7 @@
 	_create:  function() {
 	      if (this.options.href === ""  ||      // Nothing to load
 		  this._wasCreated === true) {     // or it was loaded
+		  //  XXXX Commented for now, but need to review the logic here when it is a non-lazy dialog ... this._wasCreated = true;  // Feels like this belongs in _create, should we have a _wasLoaded ?
 		  return this._super();
 	      } else {
 		  return true;
@@ -56,23 +57,29 @@
 	// are just a few common ones
 	_delayedSetOptions: {},
 	_setOptions: function (options) {
-		if (this.options.href !== ""  || !this._wasCreated) { //  && key in delayedOptions) {
-		return;
-	    }
-
-	    return this._super(options);
-	},
+		if (this.options.href !== "") {
+		    if (!this._wasCreated)
+			return;
+		}
+		
+		return this._super(options);
+	    },
 	_setOption: function (key, val) {
-	    log(key + " = " + val);
-	    if (!this._wasCreated) { //  && key in delayedOptions) {
-		if (this._delayedSetOptions[key] === null)
-		    this._delayedSetOptions[key] = val;
-		return;
-	    } else if (key == "href" && val) {
-		this._wasCreated = false;
-	    }
-
-	    return this._super(key,val);
+		// log("lazy _setOption: " + key + " = ");
+		// log(val);
+		if (key == "href") {
+		    // if val is blank we will consider ourselves ready to instantiate, otherwsie invalidate loading when href is changed
+		    this._wasCreated = (val === "" || val === undefined);
+		}
+		
+		if (this.options.href !== "") {
+		    if (!this._wasCreated) { //  && key in delayedOptions) {
+			if (this._delayedSetOptions[key] === null)
+			    this._delayedSetOptions[key] = val;
+			return;
+		    }
+		}
+		return this._super(key,val);
 	},
 	refresh: function(e) {
 	    if (this.options.href && this._wasCreated) {
@@ -103,7 +110,7 @@
 		this._wasCreated === true) {     // or it was loaded
 		if (this._delayedSetOptions.length) {
 		    this._setOptions(this._delayedSetOptions);
-		    objlog(this._delayedSetOptions);
+		    // objlog(this._delayedSetOptions);
 		    this._delayedSetOptions = {};
 		}
 

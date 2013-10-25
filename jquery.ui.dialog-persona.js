@@ -28,7 +28,10 @@ $.widget( "ui.dialog", $.ui.dialog, {
 		},
 
 	// Save and make available the last event that activated this dialog
-	activatedBy: null,
+	_activatedBy: null,
+	activatedBy: function() {
+	    return this._activatedBy;
+	},
 
 	_persona: false,
 
@@ -52,9 +55,18 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	//     return this._super();
 	// },
 	_hasPersonas: function() {
-	    return Object.getOwnPropertyNames(this.options.personas).length > 0;
+	    if (this.options && this.options.personas) {
+		return Object.getOwnPropertyNames(this.options.personas).length > 0;
+	    } else {
+		return;
+	    }
 	},
 	open: function(e) { 
+	    if (e && e.currentTarget) {
+		if (e.target === e.currentTarget) { // Save first in bubble stack!
+		    this._activatedBy = $(e.currentTarget);
+		}
+	    }
 	    if (this._hasPersonas()) { 
 		this._setPersona(e);
 	    }
@@ -70,7 +82,6 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	_setPersona: function(e) {
 	    if (e) {
 		if (e.currentTarget) {
-		    $(this).activatedBy = $(e.currentTarget);
 		    this.persona($(e.currentTarget).attr("persona"));
 		} else {
 		    this.persona(e);
@@ -80,13 +91,12 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    }
 	},
 	_defaultPersona: function() {
-	    if (this._hasPersonas() &&
-		this._persona == false || this._persona == undefined) {
+	    if (this._hasPersonas()) {
 		if (!this.options.defaultPersona || 
 		    !this.options.personas[this.options.defaultPersona]) {
+
 		    this.options.defaultPersona = Object.keys(this.options.personas)[0];
 		}
-
 		return this.options.defaultPersona;
 	    }
 	},
@@ -96,24 +106,25 @@ $.widget( "ui.dialog", $.ui.dialog, {
 	    }
 
 	    var that = this;
-	    if (!this._persona)
+	    if (!persona & !this._persona)
 		persona = this._defaultPersona();
 
 	    if (persona == null || persona == "") {
 		return this._persona;
 	    } else if (persona !== this._persona) {
-		//		log("Persona: " + persona + " OLD: " + this._persona);
+		//log("Persona: " + persona + " OLD: " + this._persona);
 		var oldpersona = this._persona;
 		this._persona = persona;
 
-		if (!this.options.personas[this._persona]) {
-		    this._persona = this.options.defaultPersona;
+		if (this.options.personas[this._persona] === undefined) {
+		    this._persona = this._defaultPersona();
 		}
 
 		// One persona could have attributes the other does
 		// not, so we'll clear the old one just to be safe.
-		// Another option might to store the "clean" state and
-		// reset options based of that merge.
+		// Another option might be to store the "clean" state
+		// and reset options based of that merge.
+
 		if (oldpersona && this.options.personas[oldpersona]) {
 		    // XXXX This isn't always going to work right, it
 		    // would be better to have same keys in personas.
