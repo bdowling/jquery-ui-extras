@@ -122,9 +122,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
 		// One persona could have attributes the other does
 		// not, so we'll clear the old one just to be safe.
-		// Another option might be to store the "clean" state
-		// and reset options based of that merge.
-
+		// Another option might to store the "clean" state and
+		// reset options based of that merge.
 		if (oldpersona && this.options.personas[oldpersona]) {
 		    // XXXX This isn't always going to work right, it
 		    // would be better to have same keys in personas.
