@@ -67,9 +67,8 @@
 	_setOption: function (key, val) {
 		// log("lazy _setOption: " + key + " = ");
 		// log(val);
-		if (key == "href") {
-		    // if val is blank we will consider ourselves ready to instantiate, otherwsie invalidate loading when href is changed
-		    this._wasCreated = (val === "" || val === undefined);
+		if (key == "href" && val) {
+		    this._wasCreated = false;
 		}
 		
 		if (this.options.href !== "") {
