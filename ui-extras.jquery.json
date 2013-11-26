@@ -1,0 +1,30 @@
+{
+  "name": "jquery.ui-extras",
+  "title": "Ui Extras",
+  "description": "Just a few jQueryUI Extensions",
+  "version": "0.1.0",
+  "homepage": "https://github.com/bdowling/jquery-ui-extras",
+  "author": {
+    "name": "Brian J. Dowling",
+    "email": "bjd-dev@simplicity.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bdowling@github.com/bdowling/jquery-ui-extras.git"
+  },
+  "bugs": "https://github.com/bdowling/jquery-ui-extras/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bdowling/jquery-ui-extras/blob/master/LICENSE-MIT"
+    },
+    {
+      "type": "Apache-2.0",
+      "url": "https://github.com/bdowling/jquery-ui-extras/blob/master/LICENSE-Apache-2.0"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": []
+}
