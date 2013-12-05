@@ -5,20 +5,20 @@
   <title>Ui Extras Test Suite</title>
   <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
   <script src="../external/jquery-loader.js"></script>
-  <script src="../external/jquery-ui/jquery-ui-1.10.3.min.js"></script>
+  <script src="../external/jquery-ui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="../external/jquery-ui/jquery-ui.css">
 
   <!-- Load local QUnit. -->
   <link rel="stylesheet" href="../external/qunit/qunit.css" media="screen">
   <script src="../external/qunit/qunit.js"></script>
   <!-- Load local lib and tests. -->
-  <script src="../src/jquery.ui.dialog-persona.js"></script>
+  <script src="../src/jquery.ui.dialog-lazy.js"></script>
 
-  <script src="ui-extras.dialog-persona.js"></script>
+  <script src="ui-extras.dialog-lazy.js"></script>
   <!-- Removing access to jQuery and $. But it'll still be available as _$, if
        you REALLY want to mess around with jQuery in the console. REMEMBER WE
        ARE TESTING A PLUGIN HERE, THIS HELPS ENSURE BEST PRACTICES. REALLY. -->
-  <script>window._$ = jQuery.noConflict(true);</script>
+<!--  <script>window._$ = jQuery.noConflict(true);</script> -->
 </head>
 <body>
   <div id="qunit"></div>

@@ -52,7 +52,10 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
-          jshintrc: 'test/.jshintrc'
+          jshintrc: 'test/.jshintrc',
+          '--web-security' : false,
+          '--local-to-remote-url-access' : true,
+          '--ignore-ssl-errors' : true
         },
         src: [
               "test/**/*.js",

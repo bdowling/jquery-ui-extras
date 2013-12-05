@@ -29,7 +29,6 @@
       this.d2 = $("#dialog2");
     }
   });
-
   test('is dialog', function() {
           expect(1);
 
@@ -48,6 +47,7 @@
                     "personas": {"a" : {"title": "a"}, "b": {"title": "b"}}} );
     ok(this.d2.hasClass("ui-dialog-content"), 
        "should have ui-dialog-content class added");
+    this.d2.remove();
   });
 
   test("test active persona after open", function() {
@@ -69,6 +69,7 @@
           "switch to b persona");
     equal(this.d2.dialog("persona"), "b", 
           "check we are switched to b persona");
+    this.d2.remove();
   });
 
   test("test persona switch trigger on open", function() {
@@ -81,6 +82,7 @@
 
     this.d2.dialog({"autoOpen": true,
                 "personas": {"a" : {"title": "A"}, "b": {"title": "B"}}} );
+    this.d2.remove();
   });
 
   test("test persona switch trigger, open + switch", function() {
@@ -98,6 +100,7 @@
 
     equal(this.d2.dialog("persona", "b"), "b", 
           "switched to b persona");
+    this.d2.remove();
   });
 
 
@@ -113,6 +116,7 @@
        "should have ui-dialog-content class added");
     equal(this.d2.dialog("persona"), "a", 
           "first persona added after open should be set");
+    this.d2.remove();
   });
 
   // test("is awesome", function() {
